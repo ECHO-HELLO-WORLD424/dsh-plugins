@@ -14,9 +14,9 @@ that does not serve those models is never forced on them.
 - id: openrouter-provider-routing
   name: 'dsh-openrouter-provider-routing'
   config:
-    provider: 'deepinfra'
-    model: 'deepseek/deepseek-v4.1-flash'
-    allowFallbacks: true
+    provider: 'deepseek'
+    model: '~deepseek/deepseek-flash-latest'
+    allowFallbacks: false
 ```
 
 Requests for that model carry:
