@@ -1,0 +1,19 @@
+# Bundle patch for dsh-openrouter-provider-routing.
+#
+# The row below is inert until `provider` names an OpenRouter provider. Override
+# this row from your profile's cordis.patch.yml with the complete config:
+#
+#   - id: openrouter-provider-routing
+#     name: 'dsh-openrouter-provider-routing'
+#     config:
+#       provider: DeepInfra
+#       allowFallbacks: true
+#
+# A profile patch replaces the targeted row's whole config, so repeat every key
+# you want to keep.
+- insert:
+    - id: openrouter-provider-routing
+      name: 'dsh-openrouter-provider-routing'
+      config:
+        provider: ''
+        allowFallbacks: true

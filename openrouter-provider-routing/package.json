@@ -1,0 +1,50 @@
+{
+  "name": "dsh-openrouter-provider-routing",
+  "version": "0.1.0",
+  "description": "Prefer a chosen OpenRouter upstream provider and fall back to OpenRouter's default routing when that provider cannot serve a request.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/index.d.ts",
+    "lib/routing.js",
+    "lib/routing.d.ts",
+    "cordis.patch.yml",
+    "examples/profile-patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "openrouter",
+    "llm",
+    "routing"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "~3.18.4"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "^0.87.1"
+  }
+}

@@ -1,0 +1,10 @@
+# Example: prefer the `deepinfra` upstream provider for every OpenRouter
+# request, while keeping OpenRouter's default routing as the fallback.
+#
+# Merge this entry into your profile's cordis.patch.yml. A patch replaces the
+# targeted row's whole config, so repeat every field you want to keep.
+- id: openrouter-provider-routing
+  name: 'dsh-openrouter-provider-routing'
+  config:
+    provider: 'deepinfra'
+    allowFallbacks: true
