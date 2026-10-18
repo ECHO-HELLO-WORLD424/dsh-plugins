@@ -22,7 +22,7 @@ that does not serve those models is never forced on them.
 Requests for that model carry:
 
 ```json
-{ "provider": { "order": ["deepinfra"], "allow_fallbacks": true } }
+{ "provider": { "order": ["deepseek"], "allow_fallbacks": false } }
 ```
 
 - `provider` is an OpenRouter provider slug (`deepinfra`, `together`, ...).
