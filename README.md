@@ -4,8 +4,10 @@ A collection of plugins for [DeepSeek Harness](https://github.com/deepseek-ai/de
 
 ## `dsh-openrouter-provider-routing`
 
-Prefer a chosen OpenRouter upstream provider for every request, while keeping
-OpenRouter's default routing as the fallback when that provider is unavailable.
+Prefer a chosen OpenRouter upstream provider for **one specific model**, while
+keeping OpenRouter's default routing as the fallback when that provider is
+unavailable. Every other model keeps OpenRouter's own routing, so a provider
+that does not serve those models is never forced on them.
 
 ```yaml
 # your profile's cordis.patch.yml
@@ -13,11 +15,11 @@ OpenRouter's default routing as the fallback when that provider is unavailable.
   name: 'dsh-openrouter-provider-routing'
   config:
     provider: 'deepinfra'
+    model: 'deepseek/deepseek-v4.1-flash'
     allowFallbacks: true
 ```
 
-That produces this request-body preference on OpenRouter Chat Completions
-calls:
+Requests for that model carry:
 
 ```json
 { "provider": { "order": ["deepinfra"], "allow_fallbacks": true } }
@@ -25,10 +27,12 @@ calls:
 
 - `provider` is an OpenRouter provider slug (`deepinfra`, `together`, ...).
   The plugin does not fetch or validate slugs.
-- With `allowFallbacks: true` (default), a provider that is down, rate limited,
-  or does not serve the model falls through to OpenRouter's normal routing.
-- With `allowFallbacks: false`, the request is pinned to that provider and
-  fails instead of substituting another one.
+- `model` is the exact OpenRouter model id. Model ids are matched exactly; only
+  that model's requests are shaped.
+- With `allowFallbacks: true` (default), a provider that is down or rate limited
+  falls through to OpenRouter's normal routing.
+- With `allowFallbacks: false`, that model's request is pinned to the provider
+  and fails instead of substituting another one.
 
 Install it into a profile with DSH's plugin manager:
 

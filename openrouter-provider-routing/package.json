@@ -1,7 +1,7 @@
 {
   "name": "dsh-openrouter-provider-routing",
-  "version": "0.1.0",
-  "description": "Prefer a chosen OpenRouter upstream provider and fall back to OpenRouter's default routing when that provider cannot serve a request.",
+  "version": "0.2.0",
+  "description": "Prefer a chosen OpenRouter upstream provider for one configured model, falling back to OpenRouter's default routing when that provider cannot serve the request.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {

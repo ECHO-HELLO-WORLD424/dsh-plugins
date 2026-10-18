@@ -6,6 +6,7 @@ import {
   buildOpenRouterRouting,
   createModelRoutingPatcher,
   isOpenRouterModel,
+  normalizeModelId,
   normalizeProviderName,
   OPENROUTER_PROVIDER_ID,
   resolveAdapterModel,
@@ -24,6 +25,16 @@ test('provider names are trimmed and anything non-string is unset', () => {
   assert.equal(normalizeProviderName(null), '')
   assert.equal(normalizeProviderName(42), '')
   assert.equal(normalizeProviderName({ name: 'DeepInfra' }), '')
+})
+
+test('model ids are trimmed and anything non-string is unset', () => {
+  assert.equal(normalizeModelId('  deepseek/deepseek-v4.1-flash  '), 'deepseek/deepseek-v4.1-flash')
+  assert.equal(normalizeModelId(''), '')
+  assert.equal(normalizeModelId('   '), '')
+  assert.equal(normalizeModelId(undefined), '')
+  assert.equal(normalizeModelId(null), '')
+  assert.equal(normalizeModelId(42), '')
+  assert.equal(normalizeModelId({ id: 'model' }), '')
 })
 
 test('the default preference uses order with fallbacks enabled', () => {

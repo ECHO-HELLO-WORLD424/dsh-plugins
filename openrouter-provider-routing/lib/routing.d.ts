@@ -4,6 +4,9 @@ export declare const OPENROUTER_PROVIDER_ID: 'openrouter'
 /** Read a configured provider name, trimming and rejecting non-strings. */
 export declare function normalizeProviderName(value: unknown): string
 
+/** Read a configured model id, trimming and rejecting non-strings. */
+export declare function normalizeModelId(value: unknown): string
+
 /** Build the request-body `provider` object, or `undefined` when unset. */
 export declare function buildOpenRouterRouting(
   provider: unknown,

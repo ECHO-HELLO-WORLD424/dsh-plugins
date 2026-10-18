@@ -28,6 +28,20 @@ export function normalizeProviderName(value) {
 }
 
 /**
+ * Read the configured model id.
+ *
+ * Model ids are OpenRouter's request ids (for example
+ * `deepseek/deepseek-v4.1-flash`) and are matched exactly. Anything but a
+ * non-empty string after trimming is "not configured".
+ *
+ * @param {unknown} value - raw configuration value.
+ * @returns {string} the trimmed model id, or an empty string.
+ */
+export function normalizeModelId(value) {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+/**
  * Build the request-body `provider` object for one configured provider.
  *
  * With fallbacks enabled (the default), the provider is an `order` preference:

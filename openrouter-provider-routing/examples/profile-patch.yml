@@ -1,5 +1,6 @@
-# Example: prefer the `deepinfra` upstream provider for every OpenRouter
-# request, while keeping OpenRouter's default routing as the fallback.
+# Example: prefer the `deepinfra` upstream provider for one OpenRouter model,
+# while keeping OpenRouter's default routing as the fallback. Requests for every
+# other model keep OpenRouter's own routing.
 #
 # Merge this entry into your profile's cordis.patch.yml. A patch replaces the
 # targeted row's whole config, so repeat every field you want to keep.
@@ -7,4 +8,5 @@
   name: 'dsh-openrouter-provider-routing'
   config:
     provider: 'deepinfra'
+    model: 'deepseek/deepseek-v4.1-flash'
     allowFallbacks: true
