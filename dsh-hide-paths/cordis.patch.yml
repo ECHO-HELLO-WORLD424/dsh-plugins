@@ -1,0 +1,23 @@
+# Composition patch for dsh-hide-paths.
+#
+# One row: the plugin wraps ctx.sandbox / ctx.fs / ctx.subprocess when it
+# activates. `hide` lists the absolute paths that must disappear from the
+# sandbox; an empty list makes the plugin inert.
+#
+# A profile patch that overrides this row replaces the whole config, so restate
+# `hide` in full when overriding it there:
+#
+#   - id: hide-paths
+#     name: dsh-hide-paths
+#     config:
+#       hide:
+#         - /home/patrick/Data/web/echo-hello-world424.github.io
+#
+# Removal is a view change only: the real directory, its permissions, and its
+# contents on the host are never touched.
+- insert:
+    - id: hide-paths
+      name: dsh-hide-paths
+      config:
+        hide:
+          - /home/patrick/Data/web/echo-hello-world424.github.io

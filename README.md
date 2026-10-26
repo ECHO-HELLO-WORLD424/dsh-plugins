@@ -42,3 +42,33 @@ dsh plugin --profile <profile> add /absolute/path/to/openrouter-provider-routing
 
 See the [plugin README](openrouter-provider-routing/README.md) for
 configuration, behavior, verification, and limitations.
+
+## `dsh-hide-paths`
+
+Make configured paths **nonexistent** in the sandbox instead of merely
+forbidden. An agent that runs `cd ..` and `ls`, `grep`, `cat`, or `find` sees a
+parent directory that has no such entry, so nothing on the host is revealed —
+not even the name. Access-denial approaches (`EACCES`, `[sandbox: file access
+denied …]`) prove existence and are deliberately not used here.
+
+```yaml
+# your profile's cordis.patch.yml (or the bundle's own row)
+- id: hide-paths
+  name: dsh-hide-paths
+  config:
+    hide:
+      - /home/patrick/Data/web/echo-hello-world424.github.io
+```
+
+The plugin composes mounts into the bubblewrap view used for confined commands,
+mirrors that absence through the in-process filesystem service, and runs the
+packaged `ripgrep` inside the same masked view. The real directories are never
+touched; only the sandbox's view of them changes.
+
+It fails closed: an unmaskable path (inside the writable workspace, under
+`/tmp`, parent `/`, …) refuses the plugin load rather than degrading to weaker
+hiding, and runtime refusal never names the hidden path.
+
+See the [plugin README](dsh-hide-paths/README.md) for the mechanism, strictness
+rules, verification commands, and limits (`danger-full-access` sessions bypass
+confinement, and masking is Linux/bubblewrap only).

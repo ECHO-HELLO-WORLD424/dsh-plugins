@@ -1,0 +1,37 @@
+{
+  "name": "dsh-hide-paths",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Removes configured paths from the DSH sandbox view so agents observe them as nonexistent instead of being denied access.",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/mask.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "sandbox",
+    "privacy",
+    "bubblewrap"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/"
+  }
+}

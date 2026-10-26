@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Hide Paths",
+    "description": "Removes configured directories from the sandbox view so confined commands and file tools observe them as nonexistent instead of being denied access."
+  }
+}
