@@ -56,6 +56,23 @@ With Desktop, use the app's **Plugins** page or the Desktop-bundled `dsh plugin`
 command, which manages the app-owned profile. The npm CLI refuses package
 operations for the reserved `desktop` profile.
 
+### Activation fails with `ERR_MODULE_NOT_FOUND`
+
+If `dsh web` reports:
+
+```text
+failed to import: Error [ERR_MODULE_NOT_FOUND]: Cannot find package
+'@deepseek-ai/schemastery' imported from .../lib/index.js
+```
+
+the plugin was linked (`link:`) into the profile but one of its DSH-supplied
+imports was declared as a regular dependency. A linked package gets no own
+`node_modules`, and DSH only resolves installation packages for it when they are
+listed in its `peerDependencies`. Keep both `@deepseek-ai/schemastery` and
+`@earendil-works/pi-ai` in `peerDependencies` (never in `dependencies`), then
+reinstall or restart the profile. The pnpm peer warning printed by
+`dsh plugin add` is expected for a linked package and is not the failure.
+
 ## Configure
 
 Override the row by id in your profile's `cordis.patch.yml`:
@@ -188,9 +205,10 @@ recorded there.
 - **Provider slugs are not validated.** A typo is sent as-is; OpenRouter then
   falls back like any other unavailable provider (or fails in strict mode).
 - **Relies on pi-ai's `compat.openRouterRouting` and DSH's live pi-ai model
-  snapshot.** Tested with DSH `0.2.0-rc.2` and pi-ai `0.87.1`. If a future
-  release renames those internals, the plugin logs a warning when it cannot
-  shape the live model and leaves the request on OpenRouter's own routing.
+  snapshot.** Tested with DSH `0.2.1-rc.5`, pi-ai `1.5.0`, and schemastery
+  `3.18.5`. If a future release renames those internals, the plugin logs a
+  warning when it cannot shape the live model and leaves the request on
+  OpenRouter's own routing.
 - **No provider or model list is fetched.** No network calls happen in this
   plugin.
 
@@ -199,13 +217,22 @@ recorded there.
 ```sh
 cd openrouter-provider-routing
 pnpm install          # dev dependencies; the runtime peers stay shared with DSH
-node --test test/
+node --test
 ```
 
-`@earendil-works/pi-ai` is a peer dependency because the plugin must shape the
-same catalog instance the running DSH uses; installing a second copy inside the
-plugin would shape a different module. `@deepseek-ai/schemastery` provides the
-configuration schema.
+Both runtime imports are **peer dependencies** because DSH supplies them from
+the installation that is already running:
+
+- `@earendil-works/pi-ai` — the plugin must shape the same catalog instance the
+  running DSH uses; a second copy inside the plugin would shape a different
+  module.
+- `@deepseek-ai/schemastery` — the configuration schema validator shipped with
+  DSH.
+
+Declaring either as a regular `dependencies` entry breaks a local (`link:`)
+install: pnpm links the package without installing its dependencies, and DSH's
+resolver only routes installation packages to a linked plugin when they appear
+in its `peerDependencies`.
 
 | File | Role |
 |---|---|

@@ -1,6 +1,6 @@
 {
   "name": "dsh-openrouter-provider-routing",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Prefer a chosen OpenRouter upstream provider for one configured model, falling back to OpenRouter's default routing when that provider cannot serve the request.",
   "type": "module",
   "main": "lib/index.js",
@@ -36,15 +36,14 @@
     }
   },
   "scripts": {
-    "test": "node --test test/"
-  },
-  "dependencies": {
-    "@deepseek-ai/schemastery": "~3.18.4"
+    "test": "node --test"
   },
   "peerDependencies": {
+    "@deepseek-ai/schemastery": "~3.18.4",
     "@earendil-works/pi-ai": "*"
   },
   "devDependencies": {
-    "@earendil-works/pi-ai": "^0.87.1"
+    "@deepseek-ai/schemastery": "~3.18.4",
+    "@earendil-works/pi-ai": "^1.5.0"
   }
 }
