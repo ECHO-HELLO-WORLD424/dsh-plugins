@@ -5,7 +5,7 @@
 #
 # Usage:
 #   tools/dsh-gpu-patch/restore.sh                 # restore every installed copy
-#   tools/dsh-gpu-patch/restore.sh <lib/index.js>  # restore a specific copy
+#   tools/dsh-gpu-patch/restore.sh <backup>        # restore one .dsh-gpu-patch.orig backup
 set -euo pipefail
 
 targets=()

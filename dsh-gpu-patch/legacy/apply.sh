@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # [dsh-gpu-patch] Let DSH's workspace-write sandbox reach the host GPU.
 #
+# LEGACY FALLBACK. Prefer the dsh-gpu-patch bundle: it wraps
+# `ctx.sandbox.confine` at runtime, so it survives DSH updates and applies
+# without a restart. Use this script only where the profile cannot load the
+# bundle (another profile, or a `dsh` run without one). It is idempotent and
+# detects an already-patched provider.
+#
 # Background
 # ----------
 # DSH's Linux sandbox profile starts with `--dev /dev`, which installs a FRESH
@@ -24,9 +30,9 @@
 # in-process, so a server that is already running keeps using the old code.
 #
 # Usage:
-#   tools/dsh-gpu-patch/apply.sh                 # patch every installed copy
-#   tools/dsh-gpu-patch/apply.sh <lib/index.js>  # patch a specific copy
-#   tools/dsh-gpu-patch/restore.sh               # revert from the .orig backup
+#   legacy/apply.sh                 # patch every installed copy
+#   legacy/apply.sh <lib/index.js>  # patch a specific copy
+#   legacy/restore.sh               # revert from the .orig backup
 set -euo pipefail
 
 PY="${PYTHON:-python3}"
@@ -98,16 +104,18 @@ function gpuDeviceArgs() {
 """
 
 ANCHOR_DOC = "* @module @deepseek-ai/dsh-sandbox-local/profiles\n*/\n"
+# `workspaceRoot` became `workspaceWritableRoots(policy)` in dsh-sandbox-local
+# 0.2.2; keep the exact current body so a further layout change fails safely.
 ANCHOR_MODE = (
     '\tif (policy.mode === "workspace-write") {\n'
     '\t\targs.push("--tmpfs", "/tmp");\n'
-    '\t\targs.push("--bind", policy.workspaceRoot, policy.workspaceRoot);\n'
+    '\t\tfor (const root of workspaceWritableRoots(policy)) args.push("--bind", root, root);\n'
     "\t}\n"
 )
 REPL_MODE = (
     '\tif (policy.mode === "workspace-write") {\n'
     '\t\targs.push("--tmpfs", "/tmp");\n'
-    '\t\targs.push("--bind", policy.workspaceRoot, policy.workspaceRoot);\n'
+    '\t\tfor (const root of workspaceWritableRoots(policy)) args.push("--bind", root, root);\n'
     "\t\targs.push(...gpuDeviceArgs()); // " + MARKER + "\n"
     "\t}\n"
 )
