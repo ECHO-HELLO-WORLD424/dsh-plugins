@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "GPU 直通",
+    "description": "将宿主机的 NVIDIA 设备节点授予 workspace-write 沙箱会话，使 CUDA、NVML 与 nvidia-smi 可在沙箱内使用，而不再回退到 CPU。"
+  }
+}

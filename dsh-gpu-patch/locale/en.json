@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "GPU passthrough",
+    "description": "Grants the host NVIDIA device nodes to workspace-write sandbox sessions, so CUDA, NVML, and nvidia-smi work inside the sandbox instead of falling back to the CPU."
+  }
+}

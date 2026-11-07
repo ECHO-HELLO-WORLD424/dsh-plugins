@@ -1,0 +1,23 @@
+# Composition patch for dsh-gpu-patch.
+#
+# One row: the plugin wraps ctx.sandbox.confine when it activates and appends a
+# `--dev-bind` for every NVIDIA device node that exists on the host, for
+# workspace-write sessions only. Read-only sessions are untouched.
+#
+# An empty config is enough — the device nodes are discovered from /dev. Use
+# `extraNodes` only for a non-standard device path (another vendor's render
+# node, a container-mounted alias):
+#
+#   - id: gpu-patch
+#     name: dsh-gpu-patch
+#     config:
+#       extraNodes:
+#         - /dev/nvidia10
+#
+# A profile patch that overrides this row replaces the whole config, so restate
+# `extraNodes` in full when overriding it there.
+- insert:
+    - id: gpu-patch
+      name: dsh-gpu-patch
+      config:
+        extraNodes: []

@@ -72,3 +72,34 @@ hiding, and runtime refusal never names the hidden path.
 See the [plugin README](dsh-hide-paths/README.md) for the mechanism, strictness
 rules, verification commands, and limits (`danger-full-access` sessions bypass
 confinement, and masking is Linux/bubblewrap only).
+
+## `dsh-gpu-patch`
+
+Grant the host NVIDIA device nodes to `workspace-write` sandbox sessions, so
+CUDA, NVML, and `nvidia-smi` work inside the sandbox instead of silently
+falling back to the CPU.
+
+```yaml
+# your profile's cordis.patch.yml (or the bundle's own row)
+- id: gpu-patch
+  name: dsh-gpu-patch
+  config:
+    extraNodes: []
+```
+
+DSH's sandbox profile starts with `--dev /dev`, which installs a fresh minimal
+device tree, so `/dev/nvidia*` does not exist inside it. This plugin wraps
+`ctx.sandbox.confine` and appends a `--dev-bind` for every NVIDIA node that
+exists on the host, for `workspace-write` sessions only.
+
+Because it is a runtime wrapper and not an edit to the installed package, it
+survives DSH updates and activates without a restart. Nodes are discovered
+automatically (`extraNodes` covers a non-standard path), read-only sessions are
+untouched, and no additional filesystem write grant is made.
+
+It fails soft: when the selected backend is not bubblewrap the plugin logs one
+warning and leaves the GPU hidden rather than failing the command.
+
+See the [plugin README](dsh-gpu-patch/README.md) for the mechanism,
+verification commands, the `legacy/` shell fallback, and limits (Linux and
+bubblewrap only, profile-wide, no per-session GPU isolation).

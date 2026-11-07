@@ -1,0 +1,38 @@
+{
+  "name": "dsh-gpu-patch",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Grants the host NVIDIA device nodes to DSH workspace-write sandbox sessions so CUDA, NVML, and nvidia-smi work inside the sandbox.",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "sandbox",
+    "gpu",
+    "cuda",
+    "nvidia",
+    "bubblewrap"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
